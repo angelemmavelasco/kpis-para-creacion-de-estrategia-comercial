@@ -1,0 +1,67 @@
+\documentclass[12pt, letterpaper]{article}
+
+% --- Paquetes Esenciales ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{booktabs}   % Para tablas con diseño profesional
+\usepackage{amsmath}    % Para la fórmula matemática de tu Nivel de Riesgo
+\usepackage{graphicx}   % Para cuando metas tus gráficas de Pareto y Evolución
+
+% --- Información del Reporte ---
+\title{Reporte de KPIs y Estrategia Comercial \\ \large Análisis del Último Trimestre}
+\author{Emmanuel}
+\date{Mayo de 2026}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introducción y Marco Metodológico}
+El presente reporte tiene como objetivo evaluar el desempeño comercial, la salud de la cartera de clientes
+y la eficiencia operativa del portafolio de productos durante el último trimestre \textit{Febrero - Abril}.
+
+Para garantizar una correcta interpretación de los datos y asegurar una lectura unificada, se define a continuación
+el glosario de las métricas avanzadas utilizadas en este diagnóstico.
+
+\subsection{Glosario}
+\begin{description}
+    \item[Alcance.] Alcance sobre la cuota mensual del periodo.
+    \item[Clientes Ganados] Clientes que no contaban con consumo en el periodo anterior, pero que sí lo tuvieron en el periodo actual.
+    \item[Clientes Perdidos] Clientes que contaban con consumo en el periodo anterior, pero que no lo tuvieron en el periodo actual.
+    \item[Venta neta.] Venta neta = \textit{Ingresos por ventas - Notas de crédito}.
+    \item[Clientes con consumo activo.] Clientes que han registrado al menos una compra durante el periodo en cuestión.
+    \item[Utilidad bruta.] Cálculo de utilidad = \textit{Venta neta - Costo de Venta} bruta del periodo.
+    \item[Margen bruto.]  Calculo de margen bruto = \textit{Utilidad bruta / Venta neta}.
+    \item[Indice de Gini.] Medida estadística entre 0 y 1 (expresada aquí en porcentaje) que mide la desigualdad en la distribución.
+        Un Gini cercano al 100\% en clientes indica que la venta está peligrosamente concentrada en muy pocos compradores. En productos, indica dependencia de pocos SKUs.
+    \item[Alcance de Cartera.] Porcentaje de clientes de la base total registrada que mantienen un consumo activo. Calculado como \textit{Clientes con consumo activo / Total de clientes registrados}.
+    \item[Nivel de Riesgo.] Modelo matemático propio diseñado para ponderar la vulnerabilidad comercial de una ruta o territorio, calculándose mediante la fórmula:
+    \begin{equation}
+        \text{Nivel de Riesgo} = \alpha \cdot \text{Gini} + \beta \cdot (1 - \text{Alcance de Cartera})
+    \end{equation}
+    Donde $\alpha$ y $\beta$ son coeficientes de sensibilidad ajustables según los objetivos del negocio.
+    \item[Diferencia Mediana vs. Media.] Desviación porcentual entre el promedio simple y el dato central de la muestra. Una brecha amplia indica la presencia de valores atípicos, clientes gigantes o compras extraordinarias, que sesgan la percepción del promedio común.
+    \item[Regla de Pareto.] Principio que establece que aproximadamente el 80\% de los efectos provienen del 20\% de las causas. En este contexto, se refiere a la concentración de ventas en un pequeño porcentaje de clientes o productos.
+\end{description}
+
+
+\newpage
+
+\section{Desempeño de Ventas y Cobertura}
+Se analiza el comportamiento de los ingresos y el cumplimiento de metas por ruta.
+
+
+\section{Dinámica y Conteo de Clientes activos}
+
+
+\section{Análisis de Margen y Utilidad Bruta}
+
+
+
+\section{Estructura de Riesgo Comercial}
+% Aquí van tus índices de Gini, Pareto y el cálculo de la fórmula de riesgo
+
+\end{document}
