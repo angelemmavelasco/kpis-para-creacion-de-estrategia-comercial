@@ -1,17 +1,96 @@
 \documentclass[12pt, letterpaper]{article}
 
-% --- Paquetes Esenciales ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{geometry}
 \geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
-\usepackage{booktabs}   % Para tablas con diseño profesional
-\usepackage{amsmath}    % Para la fórmula matemática de tu Nivel de Riesgo
-\usepackage{graphicx}   % Para cuando metas tus gráficas de Pareto y Evolución
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
 
-% --- Información del Reporte ---
+% hiperenlaces
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=MidnightBlue,
+    urlcolor=MidnightBlue
+}
+
+\usepackage[automake, nonumberlist]{glossaries}
+\makeglossaries
+
+\newglossaryentry{alcance_cuota}{
+    name={Alcance de cuota},
+    description={Porcentaje de cumplimiento frente a los objetivos comerciales mensuales asignados para el periodo}
+}
+
+\newglossaryentry{clientes_ganados}{
+    name={Clientes ganados},
+    description={Cuentas comerciales que no registraron consumo en el trimestre inmediato anterior, pero que validaron transacciones en el periodo actual}
+}
+
+\newglossaryentry{clientes_perdidos}{
+    name={Clientes perdidos},
+    description={Clientes activos en el periodo anterior que dejaron de registrar transacciones en el bloque mensual vigente}
+}
+
+\newglossaryentry{venta_neta}{
+    name={Venta Neta},
+    description={Ingresos brutos por facturación comercial descontando devoluciones, cancelaciones y notas de crédito aplicadas: $\text{Venta Neta} = \text{Ingresos} - \text{Notas de Crédito}$}
+}
+
+\newglossaryentry{clientes_consumo}{
+    name={Clientes con consumo},
+    description={Base de compradores que registran al menos una transacción efectiva dentro del periodo de evaluación en curso}
+}
+
+\newglossaryentry{clientes_registrados}{
+    name={Clientes registrados},
+    description={Base de clientes asignados a una ruta comercial, independientemente de su actividad o consumo durante el periodo de evaluación}
+}
+
+\newglossaryentry{utilidad_bruta}{
+    name={Utilidad bruta},
+    description={Rendimiento financiero directo obtenido tras sustraer el costo de los bienes vendidos: $\text{Utilidad Bruta} = \text{Venta Neta} - \text{Costo de Venta}$}
+}
+
+\newglossaryentry{margen_bruto}{
+    name={Margen bruto},
+    description={Relación porcentual de rentabilidad que mide la utilidad obtenida por cada unidad monetaria vendida: $\text{Utilidad Bruta} / \text{Venta Neta}$}
+}
+
+\newglossaryentry{gini}{
+    name={Índice de Gini},
+    description={Medida estadística de dispersión que evalúa la desigualdad y concentración de los ingresos dentro de una ruta comercial. Un valor de 100\% representa concentración absoluta en un único comprador}
+}
+
+\newglossaryentry{alcance_cartera}{
+    name={Alcance de cartera},
+    description={Métrica de penetración de mercado calculada como la proporción de cuentas activas frente al catálogo total registrado: $\text{Clientes con consumo} / \text{Clientes registrados}$}
+}
+
+\newglossaryentry{irc}{
+    name={Índice de Riesgo Comercial (IRC)},
+    description={Modelo ponderado lineal encargado de diagnosticar la vulnerabilidad de un territorio cruzando la concentración del ingreso y la inactividad de las cuentas asignadas:
+        \begin{equation}
+            \text{IRC} = (\alpha \cdot \text{\gls{gini}}) + (\beta \cdot \text{\gls{alcance_cartera}})
+        \end{equation}
+    }
+}
+
+\newglossaryentry{bias}{
+    name={Índice de Sesgo},
+    description={Desviación porcentual empleada para rastrear la presencia de clientes atípicos de gran volumen que sesgan e inflan el promedio simple de la ruta, calculado como }
+}
+
+\newglossaryentry{pareto}{
+    name={Regla de Pareto},
+    description={Principio analítico clásico del 80/20 que, en este contexto, evalúa si la mayor parte del ingreso depende de una fracción reducida de SKUs o clientes}
+}
+
 \title{Reporte de KPIs y Estrategia Comercial \\ \large Análisis del Último Trimestre}
-\author{Emmanuel}
+\author{Angel Emmanuel Moreno Velasco, dpto. Comercial}
 \date{Mayo de 2026}
 
 \begin{document}
@@ -19,72 +98,43 @@
 \maketitle
 \newpage
 
-\section{Introducción y Marco Metodológico}
+
+\section{Marco Metodológico}
 El presente reporte tiene como objetivo evaluar el desempeño comercial, la salud de la cartera de clientes
 y la eficiencia operativa del portafolio de productos durante el último trimestre \textit{Febrero - Abril}.
+Para ello, las consideraciones base son tomar como referencia la \gls{venta_neta} y todas sus métricas relacionadas.
 
-Para garantizar una correcta interpretación de los datos y asegurar una lectura unificada, se define a continuación
-el glosario de las métricas avanzadas utilizadas en este diagnóstico.
+Se establecerán además varios índices de control que denoten el verdaderos comportamiento, y que, cuenten con parámetros
+ajustables o pesos para dar la importancia que se considere pertinente a cada uno de los factores comerciales que se evalúen.
+Por defecto, estos parámetros ajuystables o pesos serán evaluados en partes iguales para dar misma relevancia a todo,
+a menos que se especifique lo contrario.
 
-\subsection{Glosario}
-\begin{description}
-    \item[Alcance.] Alcance sobre la cuota mensual del periodo.
-    \item[Clientes Ganados] Clientes que no contaban con consumo en el periodo anterior, pero que sí lo tuvieron en el periodo actual.
-    \item[Clientes Perdidos] Clientes que contaban con consumo en el periodo anterior, pero que no lo tuvieron en el periodo actual.
-    \item[Venta neta.] Venta neta = \textit{Ingresos por ventas - Notas de crédito}.
-    \item[Clientes con consumo activo.] Clientes que han registrado al menos una compra durante el periodo en cuestión.
-    \item[Utilidad bruta.] Cálculo de utilidad = \textit{Venta neta - Costo de Venta} bruta del periodo.
-    \item[Margen bruto.]  Calculo de margen bruto = \textit{Utilidad bruta / Venta neta}.
-    \item[Indice de Gini.] Medida estadística entre 0 y 1 (expresada aquí en porcentaje) que mide la desigualdad en la distribución.
-        Un Gini cercano al 100\% en clientes indica que la venta está peligrosamente concentrada en muy pocos compradores. En productos, indica dependencia de pocos SKUs.
-    \item[Alcance de Cartera.] Porcentaje de clientes de la base total registrada que mantienen un consumo activo. Calculado como \textit{Clientes con consumo activo / Total de clientes registrados}.
-    \item[Nivel de Riesgo.] Modelo matemático propio diseñado para ponderar la vulnerabilidad comercial de una ruta o territorio, calculándose mediante la fórmula:
-    \begin{equation}
-        \text{Nivel de Riesgo} = \alpha \cdot \text{Gini} + \beta \cdot (1 - \text{Alcance de Cartera})
-    \end{equation}
-    Donde $\alpha$ y $\beta$ son coeficientes de sensibilidad ajustables según los objetivos del negocio.
-    \item[Diferencia Mediana vs. Media.] Desviación porcentual entre el promedio simple y el dato central de la muestra. Una brecha amplia indica la presencia de valores atípicos, clientes gigantes o compras extraordinarias, que sesgan la percepción del promedio común.
-    \item[Regla de Pareto.] Principio que establece que aproximadamente el 80\% de los efectos provienen del 20\% de las causas. En este contexto, se refiere a la concentración de ventas en un pequeño porcentaje de clientes o productos.
-\end{description}
-
-
-\newpage
-
-\section{Desempeño de Ventas y Cobertura}
-Se analiza el comportamiento de los ingresos y el cumplimiento de metas por ruta.
-\begin{table}[htbp]
-\begin{tabular}{ccccccccc}
-\toprule
-ruta & Clientes registrados & Clientes con compras & Alcance de cartera & Gini & Riesgo & Media de venta neta & Mediana de venta neta & Diferencia porcentual mediana > media \\
-\midrule
-157 & 27 & 21 & 0.777778 & 0.560797 & 0.391510 & 6715.697180 & 2801.914200 & 58.278134 \\
-53 & 57 & 41 & 0.719298 & 0.522537 & 0.401619 & 6018.103815 & 3211.206865 & 46.640886 \\
-1 & 789 & 98 & 0.124208 & 0.842892 & 0.859342 & 5320.785932 & 999.568081 & 81.213902 \\
-121 & 117 & 86 & 0.735043 & 0.461034 & 0.362995 & 2392.175072 & 1493.632778 & 37.561728 \\
-153 & 92 & 74 & 0.804348 & 0.565853 & 0.380753 & 2586.778611 & 1429.510362 & 44.737816 \\
-2 & 51 & 45 & 0.882353 & 0.729999 & 0.423823 & 27994.548022 & 7482.884315 & 73.270209 \\
-26 & 66 & 61 & 0.924242 & 0.564540 & 0.320149 & 35951.130647 & 19424.561784 & 45.969539 \\
-41 & 91 & 89 & 0.978022 & 0.552025 & 0.287001 & 7057.879936 & 4039.947761 & 42.759755 \\
-55 & 90 & 77 & 0.855556 & 0.580450 & 0.362447 & 9941.601279 & 5072.860020 & 48.973411 \\
-64 & 98 & 78 & 0.795918 & 0.617940 & 0.411011 & 19140.320552 & 7663.012624 & 59.964032 \\
-59 & 114 & 88 & 0.771930 & 0.626995 & 0.427532 & 10271.722138 & 4443.448846 & 56.740956 \\
-145 & 57 & 22 & 0.385965 & 0.827336 & 0.720686 & 18932.355063 & 2254.538977 & 88.091608 \\
-\bottomrule
-\end{tabular}
-\end{table}
+Cada una de las métricas e índices abarcarán a cada una de las rutas desde las distintas dimensiones comerciales (clientes, productos, ingresos, etc.)
+para identificar patrones, tendencias y oportunidades de mejora en cada una. Y además, se hará un análisis macro con todas las consideraciones anteriores
+con el fin de dar un valor general de estatus comercial de cada centro de distribución.
 
 \section{Dinámica y Conteo de Clientes activos}
+
+Para esta sección se hace uso de la métrica de \gls{alcance_cartera}, evaluando a \gls{clientes_consumo} contra \gls{clientes_registrados}.
+Esto ayudará en primera instancia a identificar brechas entre las distintas rutas que más adelante se retomarán para conocer el \gls{irc} y
+la vulnerabilidad comercial de cada territorio.
+
 
 
 \section{Análisis de Margen y Utilidad Bruta}
 
+De manera mensual, respecto al periodo evaluado, se presentan los resultados de \gls{utilidad_bruta} y \gls{margen_bruto} para cada ruta comercial, con el fin de
+identificar fluctuaciones, tendencias y oportunidades de mejora en la rentabilidad de cada territorio.
 
+Es importante considerar que al ser rutas cuya operación es distinta o la dinámica que tienen con sus clientes puede variar significativamente, se hará énfasis en aquellas
+que respecto a su propio comportamiento y contexto muestren un comportamiento relevante. Ejemplificando, no es lo mismo evaluar a una de distribuidores contra
+otra de canal tradicional.
 
 \section{Estructura de Riesgo Comercial}
 
 El análisis de la vulnerabilidad en las rutas de distribución requiere un enfoque que no
 solo evalúe el volumen transaccionado, sino también la estabilidad de la cartera de clientes.
-Para ello, se ha desarrollado un Índice de Riesgo Comercial \textit{IRC}, una métrica ponderada que
+Para ello, se ha desarrollado un \gls{irc}, una métrica ponderada que
 identifica de manera oportuna aquellos territorios expuestos a caídas drásticas en su facturación
 debido a problemas de concentración o abandono de mercado.
 
@@ -99,20 +149,10 @@ El calculo se fundamenta en la combinación de dos factores comerciales crítico
 
     \item Inactividad de Cartera \textit{Complemento del Alcance}. \\
     Representa la proporción de clientes pertenecientes al catálogo oficial asignado a la ruta que no registraron
-    compras en el periodo evaluado. Se calcula de la forma siguiente:
-    \begin{equation}
-        \text{CA} = 1 - \text{Alcance de Cartera}
-    \end{equation}
+    compras en el periodo evaluado. Se calcula de la forma siguiente: \text{CA} = 1 - \gls{alcance_cartera}
 \end{itemize}
 
-La integración de ambos componentes se realiza mediante una combinación lineal ponderada, expresada formalmente de la siguiente manera:
-
-\begin{equation}
-    \text{IRC} = (\alpha \cdot \text{Gini}) + (\beta \cdot \text{CA})
-\end{equation}
-
-Para el presente reporte, se han asignado pesos simétricos $\alpha = 0.5$ y $\beta = 0.5$,
-otorgando la misma relevancia estratégica tanto a la diversificación de los ingresos como a la
+Para el presente reporte, se ha designado la misma relevancia estratégica tanto a la diversificación de los ingresos como a la
 reactivación de las cuentas sin consumo en el ultimo periodo.
 
 Un resultado final cercano a 1.0 (100\%) representa una ruta en riesgo.
@@ -130,39 +170,30 @@ y rutas en situación de riesgo, como la Ruta 145, caracterizadas por una severa
 \toprule
 ruta & clientes registrados & clientes con compras & alcance de cartera & gini & riesgo \\
 \midrule
-157 & 27 & 21 & 0.777778 & 0.560797 & 0.391510 \\
-53 & 57 & 41 & 0.719298 & 0.522537 & 0.401619 \\
 1 & 789 & 98 & 0.124208 & 0.842892 & 0.859342 \\
-121 & 117 & 86 & 0.735043 & 0.461034 & 0.362995 \\
-153 & 92 & 74 & 0.804348 & 0.565853 & 0.380753 \\
 2 & 51 & 45 & 0.882353 & 0.729999 & 0.423823 \\
 26 & 66 & 61 & 0.924242 & 0.564540 & 0.320149 \\
 41 & 91 & 89 & 0.978022 & 0.552025 & 0.287001 \\
+53 & 57 & 41 & 0.719298 & 0.522537 & 0.401619 \\
 55 & 90 & 77 & 0.855556 & 0.580450 & 0.362447 \\
-64 & 98 & 78 & 0.795918 & 0.617940 & 0.411011 \\
 59 & 114 & 88 & 0.771930 & 0.626995 & 0.427532 \\
+64 & 98 & 78 & 0.795918 & 0.617940 & 0.411011 \\
+121 & 117 & 86 & 0.735043 & 0.461034 & 0.362995 \\
 145 & 57 & 22 & 0.385965 & 0.827336 & 0.720686 \\
+153 & 92 & 74 & 0.804348 & 0.565853 & 0.380753 \\
+157 & 27 & 21 & 0.777778 & 0.560797 & 0.391510 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Análisis de Asimetría y Clientes Atípicos}
+\subsection{Análisis de Asimetría y Contribución}
 
 El uso exclusivo de promedios / medias simples para evaluar el rendimiento de una ruta tiende a ocultar distorsiones en el comportamiento real.
 En el entorno comercial, la presencia de clientes con consumos masivos tiende a inflar la media, generando la falsa impresión de que la ruta entera es altamente productiva. 
 
-Para idenitificar este efecto, esta sección contrasta la media contra la mediana.
+Para idenitificar este efecto, esta sección contrasta la media contra la mediana, para obetener el \gls{bias}.
 La brecha entre ambas métricas permite medir el nivel de asimetría y determinar qué tan expuesta está
 la operación a las decisiones de compra de un grupo extremadamente reducido de actores.
-
-\subsubsection{Metodología de Evaluación del Sesgo}
-La distancia relativa entre el comportamiento promedio y el comportamiento típico de la ruta se calcula mediante
-la desviación porcentual respecto a la media, estructurada de la siguiente manera:
-
-\begin{equation}
-    \text{Diferencia Porcentual (\%)} = \frac{\text{Media} - \text{Mediana}}{\text{Media}} \cdot 100
-    \label{eq:diff_porcentual}
-\end{equation}
 
 La interpretación comercial de este indicador se rige bajo los siguientes parámetros:
 \begin{itemize}
@@ -170,7 +201,8 @@ La interpretación comercial de este indicador se rige bajo los siguientes pará
     \item Mayor a 50\% Asimetría Alta.\\ La media está fuertemente desplazada hacia la derecha. Significa que el promedio de la ruta está siendo sostenido artificialmente por unas pocas compras masivas, mientras que el cliente típico compra una fracción mínima.
 \end{itemize}
 
-\subsubsection{Diagnóstico de Tendencia Central por Territorio}
+
+\subsubsection{Tendencia central}
 La Tabla \ref{tab:tendencia_central} detalla el comportamiento de los ingresos netos.
 Los casos de la Ruta 145 con 88.09\% y la Ruta 2 73.27\% representan los escenarios más críticos de la muestra,
 rutas donde el cliente promedio parece rentable, pero el cliente real típico, o sea, su mediana, realiza transacciones de bajo valor.
@@ -185,21 +217,57 @@ En contraste, la Ruta 121 con 37.56\%, o la 41 con 42.76\% muestra la estructura
 \toprule
 ruta & clientes registrados & clientes con compras & media & mediana & dif. pct. \\
 \midrule
-157 & 27 & 21 & 6715.697180 & 2801.914200 & 58.278134 \\
-53 & 57 & 41 & 6018.103815 & 3211.206865 & 46.640886 \\
 1 & 789 & 98 & 5320.785932 & 999.568081 & 81.213902 \\
-121 & 117 & 86 & 2392.175072 & 1493.632778 & 37.561728 \\
-153 & 92 & 74 & 2586.778611 & 1429.510362 & 44.737816 \\
 2 & 51 & 45 & 27994.548022 & 7482.884315 & 73.270209 \\
 26 & 66 & 61 & 35951.130647 & 19424.561784 & 45.969539 \\
 41 & 91 & 89 & 7057.879936 & 4039.947761 & 42.759755 \\
+53 & 57 & 41 & 6018.103815 & 3211.206865 & 46.640886 \\
 55 & 90 & 77 & 9941.601279 & 5072.860020 & 48.973411 \\
-64 & 98 & 78 & 19140.320552 & 7663.012624 & 59.964032 \\
 59 & 114 & 88 & 10271.722138 & 4443.448846 & 56.740956 \\
+64 & 98 & 78 & 19140.320552 & 7663.012624 & 59.964032 \\
+121 & 117 & 86 & 2392.175072 & 1493.632778 & 37.561728 \\
 145 & 57 & 22 & 18932.355063 & 2254.538977 & 88.091608 \\
+153 & 92 & 74 & 2586.778611 & 1429.510362 & 44.737816 \\
+157 & 27 & 21 & 6715.697180 & 2801.914200 & 58.278134 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsubsection{Contribución}
+
+Es importante tomar en cuenta que la presencia de clientes atípicos no es necesariamente negativa, pero sí representa un riesgo latente que debe ser monitoreado de cerca,
+especialmente en rutas con alta concentración y bajo alcance de cartera.
+
+La razón del porqué muchas de las rutas tienen una asimetría de entre el 30\% y 50\%, es porque en la mayoría de los casos, las rutas cuentan con unos cuantos clientes que son
+más fuertes en consumo. Esto es totalmente normal y razonable, y de hecho, se debe principalmente a la ley de Pareto, donde se dice que el 20\% del esfuerzo genera el 80\% de los resultados. Sin embargo, es importante monitorear que esta asimetría no se vuelva tan pronunciada que la ruta dependa exclusivamente de unos pocos clientes, lo que podría poner en riesgo su estabilidad a largo plazo.
+
+Por esta misma razón, se detalla a continuación una comparativa por ruta del esfuerzo contra los resultados en el contexto de los clientes.
+
+\begin{table}[htbp]
+\caption{Comparativo de Distribución de Clientes y Contribución al Ingreso}
+\label{tab:distribucion_pareto}
+\begin{tabular}{ccccccccc}
+\toprule
+ruta & clientes registrados & clientes con compras & clientes para 80\% & pct cartera para 80\% \\
+\midrule
+1 & 789 & 98 & 10 & 0.102041 \\
+2 & 51 & 45 & 10 & 0.222222 \\
+26 & 66 & 61 & 23 & 0.383333 \\
+41 & 91 & 89 & 36 & 0.409091 \\
+53 & 57 & 41 & 17 & 0.414634 \\
+55 & 90 & 77 & 30 & 0.389610 \\
+59 & 114 & 88 & 30 & 0.340909 \\
+64 & 98 & 78 & 26 & 0.333333 \\
+121 & 117 & 86 & 41 & 0.476744 \\
+145 & 57 & 22 & 3 & 0.142857 \\
+153 & 92 & 74 & 29 & 0.391892 \\
+157 & 27 & 21 & 8 & 0.380952 \\
+\bottomrule
+\end{tabular}
+\end{table}
+ 
+\newpage
+\printglossary[title={Glosario de Términos}, toctitle={Glosario}]
 
 
 \end{document}
