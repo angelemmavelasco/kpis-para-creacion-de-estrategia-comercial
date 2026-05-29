@@ -52,7 +52,26 @@ el glosario de las métricas avanzadas utilizadas en este diagnóstico.
 
 \section{Desempeño de Ventas y Cobertura}
 Se analiza el comportamiento de los ingresos y el cumplimiento de metas por ruta.
-
+\begin{table}[htbp]
+\begin{tabular}{ccccccccc}
+\toprule
+ruta & Clientes registrados & Clientes con compras & Alcance de cartera & Gini & Riesgo & Media de venta neta & Mediana de venta neta & Diferencia porcentual mediana > media \\
+\midrule
+157 & 27 & 21 & 0.777778 & 0.560797 & 0.391510 & 6715.697180 & 2801.914200 & 58.278134 \\
+53 & 57 & 41 & 0.719298 & 0.522537 & 0.401619 & 6018.103815 & 3211.206865 & 46.640886 \\
+1 & 789 & 98 & 0.124208 & 0.842892 & 0.859342 & 5320.785932 & 999.568081 & 81.213902 \\
+121 & 117 & 86 & 0.735043 & 0.461034 & 0.362995 & 2392.175072 & 1493.632778 & 37.561728 \\
+153 & 92 & 74 & 0.804348 & 0.565853 & 0.380753 & 2586.778611 & 1429.510362 & 44.737816 \\
+2 & 51 & 45 & 0.882353 & 0.729999 & 0.423823 & 27994.548022 & 7482.884315 & 73.270209 \\
+26 & 66 & 61 & 0.924242 & 0.564540 & 0.320149 & 35951.130647 & 19424.561784 & 45.969539 \\
+41 & 91 & 89 & 0.978022 & 0.552025 & 0.287001 & 7057.879936 & 4039.947761 & 42.759755 \\
+55 & 90 & 77 & 0.855556 & 0.580450 & 0.362447 & 9941.601279 & 5072.860020 & 48.973411 \\
+64 & 98 & 78 & 0.795918 & 0.617940 & 0.411011 & 19140.320552 & 7663.012624 & 59.964032 \\
+59 & 114 & 88 & 0.771930 & 0.626995 & 0.427532 & 10271.722138 & 4443.448846 & 56.740956 \\
+145 & 57 & 22 & 0.385965 & 0.827336 & 0.720686 & 18932.355063 & 2254.538977 & 88.091608 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Dinámica y Conteo de Clientes activos}
 
@@ -62,6 +81,125 @@ Se analiza el comportamiento de los ingresos y el cumplimiento de metas por ruta
 
 
 \section{Estructura de Riesgo Comercial}
-% Aquí van tus índices de Gini, Pareto y el cálculo de la fórmula de riesgo
+
+El análisis de la vulnerabilidad en las rutas de distribución requiere un enfoque que no
+solo evalúe el volumen transaccionado, sino también la estabilidad de la cartera de clientes.
+Para ello, se ha desarrollado un Índice de Riesgo Comercial \textit{IRC}, una métrica ponderada que
+identifica de manera oportuna aquellos territorios expuestos a caídas drásticas en su facturación
+debido a problemas de concentración o abandono de mercado.
+
+\subsection{Metodología de Cálculo}
+El calculo se fundamenta en la combinación de dos factores comerciales críticos, acotadas en una escala de 0 a 1 (o de 0\% a 100\%):
+
+\begin{itemize}
+    \item Concentración de la Venta \textit{Coeficiente de Gini}.\\
+    Mide el nivel de desigualdad en la distribución del ingreso dentro de la ruta.
+    Un valor cercano a 1 indica que la facturación depende de un grupo minúsculo de clientes con compras masivas, lo que representa una
+    vulnerabilidad si uno de esos clientes deja de comprar.
+
+    \item Inactividad de Cartera \textit{Complemento del Alcance}. \\
+    Representa la proporción de clientes pertenecientes al catálogo oficial asignado a la ruta que no registraron
+    compras en el periodo evaluado. Se calcula de la forma siguiente:
+    \begin{equation}
+        \text{CA} = 1 - \text{Alcance de Cartera}
+    \end{equation}
+\end{itemize}
+
+La integración de ambos componentes se realiza mediante una combinación lineal ponderada, expresada formalmente de la siguiente manera:
+
+\begin{equation}
+    \text{IRC} = (\alpha \cdot \text{Gini}) + (\beta \cdot \text{CA})
+\end{equation}
+
+Para el presente reporte, se han asignado pesos simétricos $\alpha = 0.5$ y $\beta = 0.5$,
+otorgando la misma relevancia estratégica tanto a la diversificación de los ingresos como a la
+reactivación de las cuentas sin consumo en el ultimo periodo.
+
+Un resultado final cercano a 1.0 (100\%) representa una ruta en riesgo.
+
+\subsection{Riesgo por Ruta Comercial}
+En la tabla \ref{tab:nivel_riesgo}, se presentan los resultados consolidados para los Centros de Distribución evaluados.
+Se observa un contraste crítico entre rutas altamente estables, como la Ruta 41, con alta penetración y baja dependencia,
+y rutas en situación de riesgo, como la Ruta 145, caracterizadas por una severa concentración de compra y clientes desasistidos.
+
+
+\begin{table}[htbp]
+\caption{Nivel de riesgo basado en Gini y el alcance de cartera}
+\label{tab:nivel_riesgo}
+\begin{tabular}{ccccccccc}
+\toprule
+ruta & clientes registrados & clientes con compras & alcance de cartera & gini & riesgo \\
+\midrule
+157 & 27 & 21 & 0.777778 & 0.560797 & 0.391510 \\
+53 & 57 & 41 & 0.719298 & 0.522537 & 0.401619 \\
+1 & 789 & 98 & 0.124208 & 0.842892 & 0.859342 \\
+121 & 117 & 86 & 0.735043 & 0.461034 & 0.362995 \\
+153 & 92 & 74 & 0.804348 & 0.565853 & 0.380753 \\
+2 & 51 & 45 & 0.882353 & 0.729999 & 0.423823 \\
+26 & 66 & 61 & 0.924242 & 0.564540 & 0.320149 \\
+41 & 91 & 89 & 0.978022 & 0.552025 & 0.287001 \\
+55 & 90 & 77 & 0.855556 & 0.580450 & 0.362447 \\
+64 & 98 & 78 & 0.795918 & 0.617940 & 0.411011 \\
+59 & 114 & 88 & 0.771930 & 0.626995 & 0.427532 \\
+145 & 57 & 22 & 0.385965 & 0.827336 & 0.720686 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Análisis de Asimetría y Clientes Atípicos}
+
+El uso exclusivo de promedios / medias simples para evaluar el rendimiento de una ruta tiende a ocultar distorsiones en el comportamiento real.
+En el entorno comercial, la presencia de clientes con consumos masivos tiende a inflar la media, generando la falsa impresión de que la ruta entera es altamente productiva. 
+
+Para idenitificar este efecto, esta sección contrasta la media contra la mediana.
+La brecha entre ambas métricas permite medir el nivel de asimetría y determinar qué tan expuesta está
+la operación a las decisiones de compra de un grupo extremadamente reducido de actores.
+
+\subsubsection{Metodología de Evaluación del Sesgo}
+La distancia relativa entre el comportamiento promedio y el comportamiento típico de la ruta se calcula mediante
+la desviación porcentual respecto a la media, estructurada de la siguiente manera:
+
+\begin{equation}
+    \text{Diferencia Porcentual (\%)} = \frac{\text{Media} - \text{Mediana}}{\text{Media}} \cdot 100
+    \label{eq:diff_porcentual}
+\end{equation}
+
+La interpretación comercial de este indicador se rige bajo los siguientes parámetros:
+\begin{itemize}
+    \item Cercano a 0\% Distribución Simétrica.\\ La media y la mediana son similares. Indica un mercado homogéneo donde la mayoría de los clientes compran volúmenes parecidos. La ruta es sumamente estable.
+    \item Mayor a 50\% Asimetría Alta.\\ La media está fuertemente desplazada hacia la derecha. Significa que el promedio de la ruta está siendo sostenido artificialmente por unas pocas compras masivas, mientras que el cliente típico compra una fracción mínima.
+\end{itemize}
+
+\subsubsection{Diagnóstico de Tendencia Central por Territorio}
+La Tabla \ref{tab:tendencia_central} detalla el comportamiento de los ingresos netos.
+Los casos de la Ruta 145 con 88.09\% y la Ruta 2 73.27\% representan los escenarios más críticos de la muestra,
+rutas donde el cliente promedio parece rentable, pero el cliente real típico, o sea, su mediana, realiza transacciones de bajo valor.
+En contraste, la Ruta 121 con 37.56\%, o la 41 con 42.76\% muestra la estructura operativa más orgánica y equilibrada.
+
+
+
+\begin{table}[htbp]
+\caption{Comparativo de Tendencia Central y Desviación por Atípicos}
+\label{tab:tendencia_central}
+\begin{tabular}{ccccccccc}
+\toprule
+ruta & clientes registrados & clientes con compras & media & mediana & dif. pct. \\
+\midrule
+157 & 27 & 21 & 6715.697180 & 2801.914200 & 58.278134 \\
+53 & 57 & 41 & 6018.103815 & 3211.206865 & 46.640886 \\
+1 & 789 & 98 & 5320.785932 & 999.568081 & 81.213902 \\
+121 & 117 & 86 & 2392.175072 & 1493.632778 & 37.561728 \\
+153 & 92 & 74 & 2586.778611 & 1429.510362 & 44.737816 \\
+2 & 51 & 45 & 27994.548022 & 7482.884315 & 73.270209 \\
+26 & 66 & 61 & 35951.130647 & 19424.561784 & 45.969539 \\
+41 & 91 & 89 & 7057.879936 & 4039.947761 & 42.759755 \\
+55 & 90 & 77 & 9941.601279 & 5072.860020 & 48.973411 \\
+64 & 98 & 78 & 19140.320552 & 7663.012624 & 59.964032 \\
+59 & 114 & 88 & 10271.722138 & 4443.448846 & 56.740956 \\
+145 & 57 & 22 & 18932.355063 & 2254.538977 & 88.091608 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \end{document}

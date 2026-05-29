@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1780006771.66532 "/Users/angelvelasco/Developer/kpis-para-creacion-de-estrategia-comercial/report/main.tex" "main.pdf" "main" 1780006771.83906 0
-  "/Users/angelvelasco/Developer/kpis-para-creacion-de-estrategia-comercial/report/main.tex" 1780006771.79909 3702 22afbee423a19ebb9c724a5b8779c6b8 ""
+["pdflatex"] 1780020422.21326 "/Users/angelvelasco/Developer/kpis-para-creacion-de-estrategia-comercial/report/main.tex" "main.pdf" "main" 1780020422.38751 0
+  "/Users/angelvelasco/Developer/kpis-para-creacion-de-estrategia-comercial/report/main.tex" 1780020422.02473 11368 602f8cf7ddc1fa692640770382fffc97 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -53,8 +53,8 @@
   "/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1780002297 79187 e3f5941707347d15c1721f52279213a2 ""
   "/usr/local/texlive/2026basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1772405612 2966183 588a2f29d0aaf280e3a142a37c2dd621 ""
   "/usr/local/texlive/2026basic/texmf.cnf" 1772405582 628 bbc09d6d38872d53c11bb48dc9b14e88 ""
-  "main.aux" 1780006771.81463 944 435433cd19c94263d9980d9db5406087 "pdflatex"
-  "main.tex" 1780006771.79909 3702 22afbee423a19ebb9c724a5b8779c6b8 ""
+  "main.aux" 1780020422.35704 2072 990bbc6230ca75ba2a06d79013819672 "pdflatex"
+  "main.tex" 1780020422.02473 11368 602f8cf7ddc1fa692640770382fffc97 ""
   (generated)
   "main.aux"
   "main.log"
